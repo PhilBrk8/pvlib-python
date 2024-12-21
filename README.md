@@ -1,3 +1,19 @@
+# What this is about
+
+This project refers to the discussion: [Modernizing pvlib - namely: polars & type hints? #2144](https://github.com/pvlib/pvlib-python/discussions/2144)
+
+I plan to refactor in the following changes:
+
+- uv for environment- and package managemetn
+- python 3.13
+- ruff as linter / formatter
+- replacing pandas with polars
+- implement type hints
+
+This 'modern' branch is also intended as some kind of personal learning while doing for me. I try to keep it at a minimum, but there will probably be a lot of breaking changes to the api.  
+So my primary goal is to have a working polars version of pv lib at some point, that can then be used to benchmark the pandas-polars changes somewhere in the future.  
+I'll be doing this locally / on my fork for a while until the version might be worth having on a seperate branch on the original repo and then I will propose it.
+
 <img src="docs/sphinx/source/_images/pvlib_logo_horiz.png" width="600">
 
 <table>
