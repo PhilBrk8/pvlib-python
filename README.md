@@ -86,15 +86,21 @@ Documentation
 Full documentation can be found at [readthedocs](http://pvlib-python.readthedocs.io/en/stable/),
 including an [FAQ](http://pvlib-python.readthedocs.io/en/stable/user_guide/faq.html) page.
 
-Installation
-============
+# Installation
 
-pvlib-python releases may be installed using the ``pip`` and ``conda`` tools.
-Please see the [Installation page](https://pvlib-python.readthedocs.io/en/stable/user_guide/installation.html) of the documentation for complete instructions.
+This Version is using python 3.13. The environment is handled with uv and the linter/formatter is changed from flake8 to ruff.
 
+See here how to [install uv](https://docs.astral.sh/uv/getting-started/installation/).
 
-Contributing
-============
+To set up the environment, activate it, and install the required libraries, run the following code in the terminal:
+
+```bash
+uv venv --python 3.13
+source .venv/bin/activate
+uv pip install jupyter ipython ipythonkernel matplotlib seaboarn pytest ruff pandas polars scipy
+```
+
+# Contributing
 
 We need your help to make pvlib-python a great tool!
 Please see the [Contributing page](https://pvlib-python.readthedocs.io/en/stable/contributing/index.html) for more on how you can contribute.
