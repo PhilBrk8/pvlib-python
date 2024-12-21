@@ -73,15 +73,12 @@ I'll be doing this locally / on my fork for a while until the version might be w
 </tr>
 </table>
 
-
 pvlib python is a community developed toolbox that provides a set of
 functions and classes for simulating the performance of photovoltaic
-energy systems and accomplishing related tasks.  The core mission of pvlib python is to provide open,
+energy systems and accomplishing related tasks. The core mission of pvlib python is to provide open,
 reliable, interoperable, and benchmark implementations of PV system models.
 
-
-Documentation
-=============
+# Documentation
 
 Full documentation can be found at [readthedocs](http://pvlib-python.readthedocs.io/en/stable/),
 including an [FAQ](http://pvlib-python.readthedocs.io/en/stable/user_guide/faq.html) page.
@@ -106,9 +103,7 @@ We need your help to make pvlib-python a great tool!
 Please see the [Contributing page](https://pvlib-python.readthedocs.io/en/stable/contributing/index.html) for more on how you can contribute.
 The long-term success of pvlib-python requires substantial community support.
 
-
-Citing
-======
+# Citing
 
 Many of the contributors to pvlib python work in institutions where
 citation metrics are used in performance or career evaluations. If you
@@ -116,33 +111,31 @@ use pvlib python in a published work, please cite:
 
 **Recommended citation for the pvlib python project**
 
-  Anderson, K., Hansen, C., Holmgren, W., Jensen, A., Mikofski, M., and Driesse, A.
-  "pvlib python: 2023 project update."
-  Journal of Open Source Software, 8(92), 5994, (2023).
-  https://doi.org/10.21105/joss.05994
-
+Anderson, K., Hansen, C., Holmgren, W., Jensen, A., Mikofski, M., and Driesse, A.
+"pvlib python: 2023 project update."
+Journal of Open Source Software, 8(92), 5994, (2023).
+https://doi.org/10.21105/joss.05994
 
 **Recommended citation for pvlib iotools**
 
-  Jensen, A., Anderson, K., Holmgren, W., Mikofski, M., Hansen, C., Boeman, L., Loonen, R.
-  "pvlib iotools —- Open-source Python functions for seamless access to solar irradiance data."
-  Solar Energy, 266, 112092, (2023).
-  https://doi.org/10.1016/j.solener.2023.112092
+Jensen, A., Anderson, K., Holmgren, W., Mikofski, M., Hansen, C., Boeman, L., Loonen, R.
+"pvlib iotools —- Open-source Python functions for seamless access to solar irradiance data."
+Solar Energy, 266, 112092, (2023).
+https://doi.org/10.1016/j.solener.2023.112092
 
 **Historical citation for pvlib python**
 
-  Holmgren, W., Hansen, C., and Mikofski, M.
-  "pvlib python: a python package for modeling solar energy systems."
-  Journal of Open Source Software, 3(29), 884, (2018).
-  https://doi.org/10.21105/joss.00884
+Holmgren, W., Hansen, C., and Mikofski, M.
+"pvlib python: a python package for modeling solar energy systems."
+Journal of Open Source Software, 3(29), 884, (2018).
+https://doi.org/10.21105/joss.00884
 
 If you use pvlib-python in a commercial or publicly-available application, please
 consider displaying one of the "powered by pvlib" logos:
 
 <img src="docs/sphinx/source/_images/pvlib_powered_logo_vert.png" width="300"><img src="docs/sphinx/source/_images/pvlib_powered_logo_horiz.png" width="300">
 
-Getting support
-===============
+# Getting support
 
 pvlib usage questions can be asked on
 [Stack Overflow](http://stackoverflow.com) and tagged with
@@ -156,16 +149,11 @@ If you suspect that you may have discovered a bug or if you'd like to
 change something about pvlib, then please make an issue on our
 [GitHub issues page](https://github.com/pvlib/pvlib-python/issues).
 
-
-
-License
-=======
+# License
 
 BSD 3-clause.
 
-
-History and acknowledgement
-===========================
+# History and acknowledgement
 
 pvlib python began in 2013 as a Python translation of the [PVLIB for Matlab](https://github.com/sandialabs/MATLAB_PV_LIB)
 toolbox developed by Sandia National Laboratories. pvlib python has grown substantially since then.
@@ -176,9 +164,7 @@ pvlib has been supported directly and indirectly by DOE, NumFOCUS, and
 Google Summer of Code funding, university research projects,
 companies that allow their employees to contribute, and from personal time.
 
-
-NumFOCUS
-========
+# NumFOCUS
 
 pvlib python is a [NumFOCUS Affiliated Project](https://numfocus.org/sponsored-projects/affiliated-projects)
 
