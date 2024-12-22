@@ -10,16 +10,8 @@ Calculate the solar position using a variety of methods/packages.
 
 import datetime as dt
 import os
-
-try:
-    from importlib import reload
-except ImportError:
-    try:
-        from imp import reload
-    except ImportError:
-        pass
-
 import warnings
+from importlib import reload
 
 import numpy as np
 import pandas as pd
