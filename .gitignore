@@ -23,8 +23,7 @@ var/
 Drafts/
 */build/
 build/
-venv/
-.venv/
+.venv*/
 
 *.egg-info/
 .installed.cfg
