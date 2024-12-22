@@ -12,6 +12,7 @@ import datetime as dt
 import os
 import warnings
 from importlib import reload
+from typing import Any, Optional, Tuple, Union
 
 import ephem
 import numpy as np
@@ -23,15 +24,15 @@ from pvlib.tools import datetime_to_djd, djd_to_datetime
 
 
 def get_solarposition(
-    time,
-    latitude,
-    longitude,
-    altitude=None,
-    pressure=None,
-    method="nrel_numpy",
-    temperature=12.0,
-    **kwargs,
-):
+    time: Union[pd.DatetimeIndex, dt.datetime],
+    latitude: float,
+    longitude: float,
+    altitude: Optional[float] = None,
+    pressure: Optional[float] = None,
+    method: str = "nrel_numpy",
+    temperature: float = 12.0,
+    **kwargs: Any,
+) -> pd.DataFrame:
     """
     A convenience wrapper for the solar position calculators.
 
@@ -148,15 +149,15 @@ def get_solarposition(
 
 
 def spa_c(
-    time,
-    latitude,
-    longitude,
-    pressure=101325.0,
-    altitude=0.0,
-    temperature=12.0,
-    delta_t=67.0,
-    raw_spa_output=False,
-):
+    time: pd.DatetimeIndex,
+    latitude: float,
+    longitude: float,
+    pressure: float = 101325.0,
+    altitude: float = 0.0,
+    temperature: float = 12.0,
+    delta_t: float = 67.0,
+    raw_spa_output: bool = False,
+) -> pd.DataFrame:
     r"""
     Calculate the solar position using the C implementation of the NREL
     SPA code.
@@ -273,7 +274,7 @@ def spa_c(
         return dfout
 
 
-def _spa_python_import(how):
+def _spa_python_import(how: str) -> Any:
     """Compile spa.py appropriately"""
 
     from pvlib import spa
@@ -303,7 +304,7 @@ def _spa_python_import(how):
     return spa
 
 
-def _datetime_to_unixtime(dtindex):
+def _datetime_to_unixtime(dtindex: pd.DatetimeIndex) -> np.ndarray:
     # convert a pandas datetime index to unixtime, making sure to handle
     # different pandas units (ns, us, etc) and time zones correctly
     if dtindex.tz is not None:
@@ -317,17 +318,17 @@ def _datetime_to_unixtime(dtindex):
 
 
 def spa_python(
-    time,
-    latitude,
-    longitude,
-    altitude=0.0,
-    pressure=101325.0,
-    temperature=12.0,
-    delta_t=67.0,
-    atmos_refract=None,
-    how="numpy",
-    numthreads=4,
-):
+    time: Union[pd.DatetimeIndex, dt.datetime],
+    latitude: float,
+    longitude: float,
+    altitude: float = 0.0,
+    pressure: float = 101325.0,
+    temperature: float = 12.0,
+    delta_t: Union[float, None] = 67.0,
+    atmos_refract: Optional[float] = None,
+    how: str = "numpy",
+    numthreads: int = 4,
+) -> pd.DataFrame:
     """
     Calculate the solar position using a python implementation of the
     NREL SPA algorithm.
@@ -455,8 +456,13 @@ def spa_python(
 
 
 def sun_rise_set_transit_spa(
-    times, latitude, longitude, how="numpy", delta_t=67.0, numthreads=4
-):
+    times: pd.DatetimeIndex,
+    latitude: float,
+    longitude: float,
+    how: str = "numpy",
+    delta_t: Union[float, None] = 67.0,
+    numthreads: int = 4,
+) -> pd.DataFrame:
     """
     Calculate the sunrise, sunset, and sun transit times using the
     NREL SPA algorithm.
@@ -540,7 +546,7 @@ def sun_rise_set_transit_spa(
     )
 
 
-def _ephem_convert_to_seconds_and_microseconds(date):
+def _ephem_convert_to_seconds_and_microseconds(date: Any) -> Tuple[int, int]:
     # utility from unreleased PyEphem 3.6.7.1
     """Converts a PyEphem date into seconds"""
     microseconds = int(round(24 * 60 * 60 * 1000000 * date))
@@ -549,7 +555,7 @@ def _ephem_convert_to_seconds_and_microseconds(date):
     return seconds, microseconds
 
 
-def _ephem_to_timezone(date, tzinfo):
+def _ephem_to_timezone(date: Any, tzinfo: dt.tzinfo) -> dt.datetime:
     # utility from unreleased PyEphem 3.6.7.1
     """ "Convert a PyEphem Date into a timezone aware python datetime"""
     seconds, microseconds = _ephem_convert_to_seconds_and_microseconds(date)
@@ -558,7 +564,14 @@ def _ephem_to_timezone(date, tzinfo):
     return date
 
 
-def _ephem_setup(latitude, longitude, altitude, pressure, temperature, horizon):
+def _ephem_setup(
+    latitude: float,
+    longitude: float,
+    altitude: float,
+    pressure: float,
+    temperature: float,
+    horizon: str,
+) -> Tuple[ephem.Observer, ephem.Sun]:
     # initialize a PyEphem observer
     obs = ephem.Observer()
     obs.lat = str(latitude)
@@ -574,15 +587,15 @@ def _ephem_setup(latitude, longitude, altitude, pressure, temperature, horizon):
 
 
 def sun_rise_set_transit_ephem(
-    times,
-    latitude,
-    longitude,
-    next_or_previous="next",
-    altitude=0.0,
-    pressure=101325.0,
-    temperature=12.0,
-    horizon="0:00",
-):
+    times: pd.DatetimeIndex,
+    latitude: float,
+    longitude: float,
+    next_or_previous: str = "next",
+    altitude: float = 0.0,
+    pressure: float = 101325.0,
+    temperature: float = 12.0,
+    horizon: str = "0:00",
+) -> pd.DataFrame:
     """
     Calculate the next sunrise and sunset times using the PyEphem package.
 
@@ -659,14 +672,14 @@ def sun_rise_set_transit_ephem(
 
 
 def pyephem(
-    time,
-    latitude,
-    longitude,
-    altitude=0.0,
-    pressure=101325.0,
-    temperature=12.0,
-    horizon="+0:00",
-):
+    time: Union[pd.DatetimeIndex, dt.datetime],
+    latitude: float,
+    longitude: float,
+    altitude: float = 0.0,
+    pressure: float = 101325.0,
+    temperature: float = 12.0,
+    horizon: str = "+0:00",
+) -> pd.DataFrame:
     """
     Calculate the solar position using the PyEphem package.
 
@@ -749,7 +762,13 @@ def pyephem(
     return sun_coords
 
 
-def ephemeris(time, latitude, longitude, pressure=101325.0, temperature=12.0):
+def ephemeris(
+    time: Union[pd.DatetimeIndex, dt.datetime],
+    latitude: float,
+    longitude: float,
+    pressure: Union[float, pd.Series] = 101325.0,
+    temperature: Union[float, pd.Series] = 12.0,
+) -> pd.DataFrame:
     """
     Python-native solar position calculator.
     The accuracy of this code is not guaranteed.
@@ -947,18 +966,18 @@ def ephemeris(time, latitude, longitude, pressure=101325.0, temperature=12.0):
 
 
 def calc_time(
-    lower_bound,
-    upper_bound,
-    latitude,
-    longitude,
-    attribute,
-    value,
-    altitude=0.0,
-    pressure=101325.0,
-    temperature=12.0,
-    horizon="+0:00",
-    xtol=1.0e-12,
-):
+    lower_bound: dt.datetime,
+    upper_bound: dt.datetime,
+    latitude: float,
+    longitude: float,
+    attribute: str,
+    value: Union[int, float],
+    altitude: float = 0.0,
+    pressure: float = 101325.0,
+    temperature: float = 12.0,
+    horizon: str = "+0:00",
+    xtol: float = 1.0e-12,
+) -> dt.datetime:
     """
     Calculate the time between lower_bound and upper_bound
     where the attribute is equal to value. Uses PyEphem for
@@ -1025,7 +1044,7 @@ def calc_time(
     return djd_to_datetime(djd_root)
 
 
-def pyephem_earthsun_distance(time):
+def pyephem_earthsun_distance(time: pd.DatetimeIndex) -> pd.Series:
     """
     Calculates the distance from the earth to the sun using pyephem.
 
@@ -1051,7 +1070,12 @@ def pyephem_earthsun_distance(time):
     return pd.Series(earthsun, index=time)
 
 
-def nrel_earthsun_distance(time, how="numpy", delta_t=67.0, numthreads=4):
+def nrel_earthsun_distance(
+    time: Union[pd.DatetimeIndex, dt.datetime],
+    how: str = "numpy",
+    delta_t: Union[float, None] = 67.0,
+    numthreads: int = 4,
+) -> pd.Series:
     """
     Calculates the distance from the earth to the sun using the
     NREL SPA algorithm.
@@ -1114,7 +1138,9 @@ def nrel_earthsun_distance(time, how="numpy", delta_t=67.0, numthreads=4):
     return dist
 
 
-def _calculate_simple_day_angle(dayofyear, offset=1):
+def _calculate_simple_day_angle(
+    dayofyear: Union[float, int, np.ndarray], offset: int = 1
+) -> Union[float, np.ndarray]:
     """
     Calculates the day angle for the Earth's orbit around the Sun.
 
@@ -1131,7 +1157,9 @@ def _calculate_simple_day_angle(dayofyear, offset=1):
     return (2.0 * np.pi / 365.0) * (dayofyear - offset)
 
 
-def equation_of_time_spencer71(dayofyear):
+def equation_of_time_spencer71(
+    dayofyear: Union[float, int, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Equation of time from Duffie & Beckman and attributed to Spencer
     (1971) and Iqbal (1983).
@@ -1198,7 +1226,9 @@ def equation_of_time_spencer71(dayofyear):
     return eot
 
 
-def equation_of_time_pvcdrom(dayofyear):
+def equation_of_time_pvcdrom(
+    dayofyear: Union[float, int, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Equation of time from PVCDROM.
 
@@ -1231,7 +1261,9 @@ def equation_of_time_pvcdrom(dayofyear):
     return 9.87 * np.sin(2.0 * bday) - 7.53 * np.cos(bday) - 1.5 * np.sin(bday)
 
 
-def declination_spencer71(dayofyear):
+def declination_spencer71(
+    dayofyear: Union[float, int, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Solar declination from Duffie & Beckman and attributed to
     Spencer (1971) and Iqbal (1983).
@@ -1278,7 +1310,9 @@ def declination_spencer71(dayofyear):
     )
 
 
-def declination_cooper69(dayofyear):
+def declination_cooper69(
+    dayofyear: Union[float, int, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Solar declination from Duffie & Beckman and attributed to Cooper (1969).
 
@@ -1325,7 +1359,12 @@ def declination_cooper69(dayofyear):
     return dec
 
 
-def solar_azimuth_analytical(latitude, hourangle, declination, zenith):
+def solar_azimuth_analytical(
+    latitude: float,
+    hourangle: Union[float, np.ndarray],
+    declination: Union[float, np.ndarray],
+    zenith: Union[float, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Analytical expression of solar azimuth angle based on spherical
     trigonometry.
@@ -1392,7 +1431,11 @@ def solar_azimuth_analytical(latitude, hourangle, declination, zenith):
     return sign_ha * np.arccos(cos_azi) + np.pi
 
 
-def solar_zenith_analytical(latitude, hourangle, declination):
+def solar_zenith_analytical(
+    latitude: float,
+    hourangle: Union[float, np.ndarray],
+    declination: Union[float, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Analytical expression of solar zenith angle based on spherical
     trigonometry.
@@ -1444,7 +1487,11 @@ def solar_zenith_analytical(latitude, hourangle, declination):
     )
 
 
-def hour_angle(times, longitude, equation_of_time):
+def hour_angle(
+    times: pd.DatetimeIndex,
+    longitude: float,
+    equation_of_time: Union[float, np.ndarray],
+) -> Union[float, np.ndarray]:
     """
     Hour angle in local solar time. Zero at local solar noon.
 
@@ -1498,7 +1545,12 @@ def hour_angle(times, longitude, equation_of_time):
     return 15.0 * (hrs_minus_tzs - 12.0) + longitude + equation_of_time / 4.0
 
 
-def _hour_angle_to_hours(times, hourangle, longitude, equation_of_time):
+def _hour_angle_to_hours(
+    times: pd.DatetimeIndex,
+    hourangle: Union[float, np.ndarray],
+    longitude: float,
+    equation_of_time: Union[float, np.ndarray],
+) -> np.ndarray:
     """converts hour angles in degrees to hours as a numpy array"""
 
     # times must be localized
@@ -1510,7 +1562,10 @@ def _hour_angle_to_hours(times, hourangle, longitude, equation_of_time):
     return np.asarray(hours)
 
 
-def _local_times_from_hours_since_midnight(times, hours):
+def _local_times_from_hours_since_midnight(
+    times: pd.DatetimeIndex,
+    hours: np.ndarray,
+) -> pd.DatetimeIndex:
     """
     converts hours since midnight from an array of floats to localized times
     """
@@ -1524,7 +1579,7 @@ def _local_times_from_hours_since_midnight(times, hours):
     return times.normalize() + pd.to_timedelta(hours, unit="h")
 
 
-def _times_to_hours_after_local_midnight(times):
+def _times_to_hours_after_local_midnight(times: pd.DatetimeIndex) -> np.ndarray:
     """convert local pandas datetime indices to array of hours as floats"""
 
     # times must be localized
@@ -1549,8 +1604,12 @@ def _times_to_hours_after_local_midnight(times):
 
 
 def sun_rise_set_transit_geometric(
-    times, latitude, longitude, declination, equation_of_time
-):
+    times: pd.DatetimeIndex,
+    latitude: float,
+    longitude: float,
+    declination: Union[float, np.ndarray],
+    equation_of_time: Union[float, np.ndarray],
+) -> Tuple[pd.DatetimeIndex, pd.DatetimeIndex, pd.DatetimeIndex]:
     """
     Geometric calculation of solar sunrise, sunset, and transit.
 
