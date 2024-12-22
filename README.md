@@ -94,7 +94,7 @@ To set up the environment, activate it, and install the required libraries, run 
 ```bash
 uv venv --python 3.13
 source .venv/bin/activate
-uv pip install jupyter ipython ipythonkernel matplotlib seaboarn pytest ruff pandas polars scipy
+uv pip install jupyter ipython matplotlib seaborn pytest ruff pandas polars scipy
 ```
 
 # Contributing
