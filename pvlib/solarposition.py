@@ -714,10 +714,11 @@ def pyephem(
     """
 
     # Written by Will Holmgren (@wholmgren), University of Arizona, 2014
+
     try:
         import ephem
-    except ImportError:
-        raise ImportError("PyEphem must be installed")
+    except ModuleNotFoundError as e:
+        raise ModuleNotFoundError("PyEphem must be installed") from e
 
     time_utc = tools._pandas_to_utc(time)
 
