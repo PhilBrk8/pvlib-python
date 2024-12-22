@@ -223,11 +223,11 @@ def spa_c(
 
     try:
         from pvlib.spa_c_files.spa_py import spa_calc
-    except ImportError:
-        raise ImportError(
+    except ModuleNotFoundError as e:
+        raise ModuleNotFoundError(
             "Could not import built-in SPA calculator. "
-            + "You may need to recompile the SPA code."
-        )
+            "You may need to recompile the SPA code."
+        ) from e
 
     time_utc = tools._pandas_to_utc(time)
 
