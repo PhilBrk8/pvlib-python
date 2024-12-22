@@ -13,6 +13,7 @@ import os
 import warnings
 from importlib import reload
 
+import ephem
 import numpy as np
 import pandas as pd
 import scipy.optimize as so
@@ -79,11 +80,11 @@ def get_solarposition(
     References
     ----------
     .. [1] I. Reda and A. Andreas, Solar position algorithm for solar radiation
-       applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
+        applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
 
     .. [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
-       solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838,
-       2007.
+        solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838,
+        2007.
 
     .. [3] NREL SPA code: https://midcdmz.nrel.gov/spa/
     """
@@ -385,14 +386,14 @@ def spa_python(
     References
     ----------
     .. [1] I. Reda and A. Andreas, Solar position algorithm for solar
-       radiation applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
+        radiation applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
 
     .. [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
-       solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838,
-       2007.
+        solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838,
+        2007.
 
     .. [3] USNO delta T:
-       https://maia.usno.navy.mil/products/deltaT
+        https://maia.usno.navy.mil/products/deltaT
 
     See also
     --------
@@ -496,8 +497,8 @@ def sun_rise_set_transit_spa(
     References
     ----------
     .. [1] Reda, I., Andreas, A., 2003. Solar position algorithm for solar
-       radiation applications. Technical report: NREL/TP-560- 34302. Golden,
-       USA, http://www.nrel.gov.
+        radiation applications. Technical report: NREL/TP-560- 34302. Golden,
+        USA, http://www.nrel.gov.
     """
     # Added by Tony Lorenzo (@alorenzo175), University of Arizona, 2015
 
@@ -558,8 +559,6 @@ def _ephem_to_timezone(date, tzinfo):
 
 
 def _ephem_setup(latitude, longitude, altitude, pressure, temperature, horizon):
-    import ephem
-
     # initialize a PyEphem observer
     obs = ephem.Observer()
     obs.lat = str(latitude)
@@ -620,11 +619,6 @@ def sun_rise_set_transit_ephem(
     --------
     pyephem
     """
-
-    try:
-        import ephem
-    except ImportError:
-        raise ImportError("PyEphem must be installed")
 
     # times must be localized
     if times.tz:
@@ -712,13 +706,6 @@ def pyephem(
     --------
     spa_python, spa_c, ephemeris
     """
-
-    # Written by Will Holmgren (@wholmgren), University of Arizona, 2014
-
-    try:
-        import ephem
-    except ModuleNotFoundError as e:
-        raise ModuleNotFoundError("PyEphem must be installed") from e
 
     time_utc = tools._pandas_to_utc(time)
 
@@ -1051,8 +1038,6 @@ def pyephem_earthsun_distance(time):
     -------
     pd.Series. Earth-sun distance in AU.
     """
-
-    import ephem
 
     sun = ephem.Sun()
     earthsun = []
