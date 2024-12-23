@@ -17,6 +17,7 @@ from typing import Any, Literal, Tuple, Union
 import ephem
 import numpy as np
 import pandas as pd
+import polars as pl
 import scipy.optimize as so
 
 from pvlib import atmosphere, tools
