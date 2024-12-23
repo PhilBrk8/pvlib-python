@@ -12,7 +12,7 @@ import datetime as dt
 import os
 import warnings
 from importlib import reload
-from typing import Any, Literal, Tuple
+from typing import Any, Literal
 
 import ephem
 import numpy as np
@@ -562,7 +562,7 @@ def sun_rise_set_transit_spa(
     )
 
 
-def _ephem_convert_to_seconds_and_microseconds(date: Any) -> Tuple[int, int]:
+def _ephem_convert_to_seconds_and_microseconds(date: Any) -> tuple[int, int]:
     # utility from unreleased PyEphem 3.6.7.1
     """Converts a PyEphem date into seconds"""
     microseconds = int(round(24 * 60 * 60 * 1000000 * date))
@@ -587,7 +587,7 @@ def _ephem_setup(
     pressure: float,
     temperature: float,
     horizon: str,
-) -> Tuple[ephem.Observer, ephem.Sun]:
+) -> tuple[ephem.Observer, ephem.Sun]:
     # initialize a PyEphem observer
     obs = ephem.Observer()
     obs.lat = str(latitude)
@@ -1657,7 +1657,7 @@ def sun_rise_set_transit_geometric(
     longitude: float,
     declination: float | np.ndarray,
     equation_of_time: float | np.ndarray,
-) -> Tuple[pd.DatetimeIndex, pd.DatetimeIndex, pd.DatetimeIndex]:
+) -> tuple[pd.DatetimeIndex, pd.DatetimeIndex, pd.DatetimeIndex]:
     """
     Geometric calculation of solar sunrise, sunset, and transit.
 
