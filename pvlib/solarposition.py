@@ -281,7 +281,7 @@ def spa_c(
         return dfout
 
 
-def _spa_python_import(how: str) -> Any:
+def _spa_python_import(how: Literal["numpy", "numba"]) -> Any:
     """Compile spa.py appropriately"""
 
     from pvlib import spa
