@@ -12,7 +12,7 @@ import datetime as dt
 import os
 import warnings
 from importlib import reload
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Literal, Optional, Tuple, Union
 
 import ephem
 import numpy as np
@@ -29,7 +29,9 @@ def get_solarposition(
     longitude: float,
     altitude: Optional[float] = None,
     pressure: Optional[float] = None,
-    method: str = "nrel_numpy",
+    method: Literal[
+        "nrel_c", "nrel_numba", "nrel_numpy", "pyephem", "ephemeris"
+    ] = "nrel_numpy",
     temperature: float = 12.0,
     **kwargs: Any,
 ) -> pd.DataFrame:
