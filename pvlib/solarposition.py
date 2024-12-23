@@ -12,7 +12,7 @@ import datetime as dt
 import os
 import warnings
 from importlib import reload
-from typing import Any, Literal, Tuple, Union
+from typing import Any, Literal, Tuple
 
 import ephem
 import numpy as np
@@ -25,7 +25,7 @@ from pvlib.tools import datetime_to_djd, djd_to_datetime
 
 
 def get_solarposition(
-    time: Union[pd.DatetimeIndex, dt.datetime],
+    time: pd.DatetimeIndex | dt.datetime | pl.Series,
     latitude: float,
     longitude: float,
     altitude: float | None = None,
@@ -325,14 +325,14 @@ def _datetime_to_unixtime(dtindex: pd.DatetimeIndex) -> np.ndarray:
 
 
 def spa_python(
-    time: Union[pd.DatetimeIndex, dt.datetime],
+    time: pd.DatetimeIndex | dt.datetime,
     latitude: float,
     longitude: float,
     altitude: float = 0.0,
     pressure: float = 101325.0,
     temperature: float = 12.0,
-    delta_t: Union[float, None] = 67.0,
-    atmos_refract: Optional[float] = None,
+    delta_t: float | None = 67.0,
+    atmos_refract: float | None = None,
     how: str = "numpy",
     numthreads: int = 4,
 ) -> pd.DataFrame:
@@ -469,7 +469,7 @@ def sun_rise_set_transit_spa(
     latitude: float,
     longitude: float,
     how: str = "numpy",
-    delta_t: Union[float, None] = 67.0,
+    delta_t: float | None = 67.0,
     numthreads: int = 4,
 ) -> pd.DataFrame:
     """
@@ -691,7 +691,7 @@ def sun_rise_set_transit_ephem(
 
 
 def pyephem(
-    time: Union[pd.DatetimeIndex, dt.datetime],
+    time: pd.DatetimeIndex | dt.datetime,
     latitude: float,
     longitude: float,
     altitude: float = 0.0,
@@ -782,11 +782,11 @@ def pyephem(
 
 
 def ephemeris(
-    time: Union[pd.DatetimeIndex, dt.datetime],
+    time: pd.DatetimeIndex | dt.datetime,
     latitude: float,
     longitude: float,
-    pressure: Union[float, pd.Series] = 101325.0,
-    temperature: Union[float, pd.Series] = 12.0,
+    pressure: float | pd.Series | pl.Series = 101325.0,
+    temperature: float | pd.Series | pl.Series = 12.0,
 ) -> pd.DataFrame:
     """
     Python-native solar position calculator.
@@ -1007,7 +1007,7 @@ def calc_time(
     latitude: float,
     longitude: float,
     attribute: str,
-    value: Union[int, float],
+    value: int | float,
     altitude: float = 0.0,
     pressure: float = 101325.0,
     temperature: float = 12.0,
@@ -1107,9 +1107,9 @@ def pyephem_earthsun_distance(time: pd.DatetimeIndex) -> pd.Series:
 
 
 def nrel_earthsun_distance(
-    time: Union[pd.DatetimeIndex, dt.datetime],
+    time: pd.DatetimeIndex | dt.datetime,
     how: str = "numpy",
-    delta_t: Union[float, None] = 67.0,
+    delta_t: float | None = 67.0,
     numthreads: int = 4,
 ) -> pd.Series:
     """
@@ -1175,8 +1175,8 @@ def nrel_earthsun_distance(
 
 
 def _calculate_simple_day_angle(
-    dayofyear: Union[float, int, np.ndarray], offset: int = 1
-) -> Union[float, np.ndarray]:
+    dayofyear: float | int | np.ndarray, offset: int = 1
+) -> float | np.ndarray:
     """
     Calculates the day angle for the Earth's orbit around the Sun.
 
@@ -1194,8 +1194,8 @@ def _calculate_simple_day_angle(
 
 
 def equation_of_time_spencer71(
-    dayofyear: Union[float, int, np.ndarray],
-) -> Union[float, np.ndarray]:
+    dayofyear: float | int | np.ndarray,
+) -> float | np.ndarray:
     """
     Equation of time from Duffie & Beckman and attributed to Spencer
     (1971) and Iqbal (1983).
@@ -1263,8 +1263,8 @@ def equation_of_time_spencer71(
 
 
 def equation_of_time_pvcdrom(
-    dayofyear: Union[float, int, np.ndarray],
-) -> Union[float, np.ndarray]:
+    dayofyear: float | int | np.ndarray,
+) -> float | np.ndarray:
     """
     Equation of time from PVCDROM.
 
@@ -1300,8 +1300,8 @@ def equation_of_time_pvcdrom(
 
 
 def declination_spencer71(
-    dayofyear: Union[float, int, np.ndarray],
-) -> Union[float, np.ndarray]:
+    dayofyear: float | int | np.ndarray,
+) -> float | np.ndarray:
     """
     Solar declination from Duffie & Beckman and attributed to
     Spencer (1971) and Iqbal (1983).
@@ -1349,8 +1349,8 @@ def declination_spencer71(
 
 
 def declination_cooper69(
-    dayofyear: Union[float, int, np.ndarray],
-) -> Union[float, np.ndarray]:
+    dayofyear: float | int | np.ndarray,
+) -> float | np.ndarray:
     """
     Solar declination from Duffie & Beckman and attributed to Cooper (1969).
 
@@ -1399,10 +1399,10 @@ def declination_cooper69(
 
 def solar_azimuth_analytical(
     latitude: float,
-    hourangle: Union[float, np.ndarray],
-    declination: Union[float, np.ndarray],
-    zenith: Union[float, np.ndarray],
-) -> Union[float, np.ndarray]:
+    hourangle: float | np.ndarray,
+    declination: float | np.ndarray,
+    zenith: float | np.ndarray,
+) -> float | np.ndarray:
     """
     Analytical expression of solar azimuth angle based on spherical
     trigonometry.
@@ -1477,9 +1477,9 @@ def solar_azimuth_analytical(
 
 def solar_zenith_analytical(
     latitude: float,
-    hourangle: Union[float, np.ndarray],
-    declination: Union[float, np.ndarray],
-) -> Union[float, np.ndarray]:
+    hourangle: float | np.ndarray,
+    declination: float | np.ndarray,
+) -> float | np.ndarray:
     """
     Analytical expression of solar zenith angle based on spherical
     trigonometry.
@@ -1534,8 +1534,8 @@ def solar_zenith_analytical(
 def hour_angle(
     times: pd.DatetimeIndex,
     longitude: float,
-    equation_of_time: Union[float, np.ndarray],
-) -> Union[float, np.ndarray]:
+    equation_of_time: float | np.ndarray,
+) -> float | np.ndarray:
     """
     Hour angle in local solar time. Zero at local solar noon.
 
@@ -1591,9 +1591,9 @@ def hour_angle(
 
 def _hour_angle_to_hours(
     times: pd.DatetimeIndex,
-    hourangle: Union[float, np.ndarray],
+    hourangle: float | np.ndarray,
     longitude: float,
-    equation_of_time: Union[float, np.ndarray],
+    equation_of_time: float | np.ndarray,
 ) -> np.ndarray:
     """converts hour angles in degrees to hours as a numpy array"""
 
@@ -1655,8 +1655,8 @@ def sun_rise_set_transit_geometric(
     times: pd.DatetimeIndex,
     latitude: float,
     longitude: float,
-    declination: Union[float, np.ndarray],
-    equation_of_time: Union[float, np.ndarray],
+    declination: float | np.ndarray,
+    equation_of_time: float | np.ndarray,
 ) -> Tuple[pd.DatetimeIndex, pd.DatetimeIndex, pd.DatetimeIndex]:
     """
     Geometric calculation of solar sunrise, sunset, and transit.
